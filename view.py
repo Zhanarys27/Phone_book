@@ -1,4 +1,5 @@
 import text
+from model import PhoneBook
 
 
 def main_menu():
@@ -21,17 +22,19 @@ def print_massage(msg: str):
     print('=' * len(msg) + '\n')
 
 
-def show_book(book: dict[int, list[str]], msg: str):
+def show_book(book: PhoneBook, msg: str):
     if book:
-        print('\n' + '*' * 67)
-        for i, contact in book.items():
-            print(f'{i:>3}. {contact[0]:<20} {contact[1]:<20} {contact[2]:<20}')
-        print('*' * 67 + '\n')
+        print('\n' + '*' * (book.max_len("name") + book.max_len("phone") + book.max_len("comment") + 8))
+        for i, contact in book.phone_book.items():
+            print(f'{i:>3}. {contact.name:<{book.max_len("name")}} '
+                  f'{contact.phone:<{book.max_len("phone")}} '
+                  f'{contact.comment:<{book.max_len("comment")}}')
+        print('*' * (book.max_len("name") + book.max_len("phone") + book.max_len("comment") + 8) + '\n')
     else:
         print_massage(msg)
 
 
-def input_contact(msg: str) -> list[str]:
+def input_contact(msg: list[str]) -> list[str]:
     contact = []
     for input_text in msg:
         contact.append(input(input_text))
@@ -40,4 +43,3 @@ def input_contact(msg: str) -> list[str]:
 
 def input_request(msg: str) -> str:
     return input(msg)
-
